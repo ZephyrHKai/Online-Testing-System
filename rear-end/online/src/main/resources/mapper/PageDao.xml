@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinetest.online.dao.PageDao">
+
+    <!--1.新增试卷-->
+    <insert id="addPage" useGeneratedKeys="true" keyProperty="pageId"
+        keyColumn="page_id" parameterType="Page">
+        insert into onlinetest.page (page_name, status, total) VALUES
+        (#{pageName},#{status},#{total})
+    </insert>
+
+    <!--2.修改试卷-->
+    <update id="updatePage" parameterType="Page">
+        update onlinetest.page
+        <set>
+            <if test="pageName != null" >page_name = #{pageName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="total != null">total = #{total}</if>
+        </set>
+        where page_id = #{pageId}
+    </update>
+
+    <!--3.通过pageId来删除试卷-->
+    <delete id="deletePage" parameterType="int">
+        delete from onlinetest.page
+        where page_id = #{pageId}
+    </delete>
+
+    <!--4.获取试卷列表 -->
+    <select id="queryPageList" resultType="Page">
+        select page_id, page_name, status, total from  onlinetest.page
+    </select>
+
+    <!--5.获取考试列表 -->
+    <select id="queryExamList" resultType="Page">
+        select page_id, page_name, status, total from onlinetest.page
+        where status = 1
+    </select>
+    <select id="queryPageById" resultType="Page" parameterType="int">
+        select page_id, page_name, status, total  from  onlinetest.page
+        where page_id=#{pageId}
+    </select>
+
+</mapper>

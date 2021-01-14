@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>网上考试管理系统</title>
+    <link rel="stylesheet" href="/onlinetest/layui/css/layui.css">
+    <style type="text/css">
+
+        .home_content{
+            text-align: center;
+            padding-top: 12%;
+        }
+        .home_content h2{
+            padding-top: 30px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">网上考试管理系统</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item" id="logoutbtn">退出登录</li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域 -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="/onlinetest/itemmange">题库管理</a>
+                </li>
+                <li class="layui-nav-item"><a href="/onlinetest/pagemanage">试卷管理</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">考试管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/onlinetest/exammanage">试卷分发</a></dd>
+                        <dd><a href="/onlinetest/scorelookup">成绩管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="/onlinetest/usermanage">人员管理</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <table class="layui-hide" id="stscorelist" lay-filter="stscorelist"></table>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © onlinetest.com - 网上考试管理系统
+    </div>
+</div>
+<script type="text/javascript" src="/onlinetest/js/JQuery.js"></script>
+<script type="text/javascript" src="/onlinetest/layui/layui.js"></script>
+<script type="text/javascript" src="/onlinetest/js/manage.js"></script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">发放</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">回收</a>
+</script>
+<script>
+    //JavaScript代码区域
+    var logoutUrl = "/onlinetest/local/logout";
+    const me = this;
+    //登出
+    $('#logoutbtn').click(function () {
+        $.ajax({
+            url: logoutUrl,
+            async: false,
+            cache: false,
+            type: "get",
+            dataType: "json",
+            success: function(res){
+                if(res.success){
+                    alert('登出成功');
+                    me.location.href = "/onlinetest/index";
+                }
+            }
+        })
+    })
+    layui.use(['table','form','element'], function () {
+        var table = layui.table,
+            form = layui.form,
+            element = layui.element;
+
+        var tableIns = table.render({
+            elem: '#stscorelist'
+            , height: 420
+            , url: '/onlinetest/submit/getAllScores' //数据接口
+            , title: '成绩表'
+            , page: true //开启分页
+            , totalRow: true //开启合计行
+            , cols: [[ //表头
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'userId', title: 'ID', width: 100, sort: true, fixed: 'left', totalRowText: '合计：'}
+                , {field: 'name', title: '用户名', width: 100}
+                , {field: 'pageName', title: '试卷名', width: 100}
+                , {field: 'totalScore', title: '总分', width: 100}
+                , {fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo'}
+            ]]
+        });
+
+        table.on('tool(stscorelist)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值
+            //成绩发放
+            if(layEvent === 'edit'){
+                $.ajax({
+                    url: '/onlinetest/submit/updatescore',
+                    async: false,
+                    cache: false,
+                    type: "post",
+                    dataType : "json",
+                    data : {pageId : data.pageId,
+                            status : 1},
+                    success: function (res) {
+                        if(res.success){
+                            layer.msg("发放成功!");
+                        }else{
+                            layer.msg("发放失败!");
+                        }
+                    }
+                });
+            } else if(layEvent === 'del'){
+                layer.confirm('真的回收么', function(index){
+                    //向服务端发送删除指令
+                    $.ajax({
+                        url: '/onlinetest/submit/updatescore',
+                        async: false,
+                        cache: false,
+                        type: "post",
+                        dataType : "json",
+                        data : {pageId : data.pageId,
+                                status : 0},
+                        success: function (res) {
+                            if(res.success){
+                                layer.msg("回收成功!");
+                            }else{
+                                layer.msg("回收失败!");
+                            }
+                        }
+                    });
+
+                });
+            }
+        });
+
+    });
+
+</script>
+</body>
+</html>

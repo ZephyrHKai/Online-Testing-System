@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/onlinetest/layui/css/layui.css"/>
+</head>
+<body>
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">试卷名</label>
+        <div class="layui-input-block">
+            <input type="text" id="pageName" name="pageName" required  lay-verify="required" placeholder="请输入试卷名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">题目数量</label>
+        <div class="layui-input-block">
+            <input type="number" id="total" name="total" required  lay-verify="required" placeholder="请输入题目数量" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">试卷状态</label>
+        <div class="layui-input-block">
+            <select id="status" name="status" lay-verify="required" >
+                <option value="0">不可用</option>
+                <option value="1">可用</option>
+            </select>
+        </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="/onlinetest/js/JQuery.js"></script>
+<script type="text/javascript" src="/onlinetest/layui/layui.js"></script>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            $.ajax({
+                url: '/onlinetest/page/addnewpage',
+                async: false,
+                cache: false,
+                type: "post",
+                dataType : "json",
+                data : data.field,
+                success: function (res) {
+                    if(res.success){
+                        layer.msg("添加成功!");
+                    }else{
+                        layer.msg("添加失败!");
+                    }
+                }
+            });
+            return false;
+
+        });
+    });
+</script>
+</body>
+</html>

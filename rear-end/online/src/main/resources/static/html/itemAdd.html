@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/onlinetest/layui/css/layui.css"/>
+</head>
+<body>
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">题干</label>
+        <div class="layui-input-block">
+            <input type="text" id="scontent" name="scontent" required  lay-verify="required" placeholder="请输入题干" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">选项A</label>
+        <div class="layui-input-block">
+            <input type="text" id="sa" name="sa" required  lay-verify="required" placeholder="请输入A选项" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">选项B</label>
+        <div class="layui-input-block">
+            <input type="text" id="sb" name="sb" required  lay-verify="required" placeholder="请输入B选项" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">选项C</label>
+        <div class="layui-input-block">
+            <input type="text" id="sc" name="sc" required  lay-verify="required" placeholder="请输入C选项" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">选项D</label>
+        <div class="layui-input-block">
+            <input type="text" id="sd" name="sd" required  lay-verify="required" placeholder="请输入D选项" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">答案</label>
+        <div class="layui-input-block">
+            <select id="ans" name="ans" lay-verify="required" >
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript" src="/onlinetest/js/JQuery.js"></script>
+<script type="text/javascript" src="/onlinetest/layui/layui.js"></script>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            $.ajax({
+                url: '/onlinetest/item/addnewitem',
+                async: false,
+                cache: false,
+                type: "post",
+                dataType : "json",
+                data : data.field,
+                success: function (res) {
+                    if(res.success){
+                        layer.msg("添加成功!");
+                    }else{
+                        layer.msg("添加失败!");
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

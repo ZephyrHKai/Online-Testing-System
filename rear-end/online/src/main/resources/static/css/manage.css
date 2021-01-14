@@ -1,0 +1,103 @@
+body{
+    margin: 0;
+}
+
+/********标题区**************/
+.header{
+    position: absolute;
+    width: 100%;
+    height: 90px;
+    background: #edf5fa;
+    border-bottom: 5px solid salmon;
+    border-top: 5px solid salmon;
+}
+
+/*标题*/
+.title{
+    position: absolute;
+    left: 150px;
+    top: 30px;
+    font-size: large;
+    font-family: fantasy;
+    display: inline-block;
+}
+
+.status{
+    position: absolute;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 10px;
+    left: 500px;
+    top: 30px;
+
+}
+
+.logout{
+    position: absolute;
+    background-color: #e4393c; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 10px;
+    left: 690px;
+    top: 30px;
+
+}
+
+/**************************/
+
+
+/**********菜单栏***********/
+.menu{
+    position: absolute;
+    top: 100px;
+    width: 200px;
+    height: 100%;
+    background: #f1f9f1;;
+
+}
+.menu-title{
+    padding-left: 50px;
+    padding-top: 5px;
+    font-size: 20px;
+    border: 2px solid #b0cfdb;
+}
+.menu-list ul li{
+    display: block;
+    margin: 10px;
+}
+
+
+.menu-list ul{
+    text-decoration: none;
+}
+
+.first-list ul{
+   display: none;
+}
+
+.first-list a{
+    font-size: 20px;
+}
+
+
+/**************************/
+
+
+/*工作区*/
+.work{
+    position: absolute;
+    top: 100px;
+    height: 100%;
+    width: 100%;
+    left: 200px;
+    float: right;
+    background: #2e3254;
+
+}

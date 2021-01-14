@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinetest.online.dao.ItemDao">
+
+    <!--1.新增试题-->
+    <insert id="insertItem" parameterType="Item" useGeneratedKeys="true"
+        keyProperty="sid" keyColumn="sid">
+        insert into onlinetest.item (scontent, sa, sb, sc, sd, ans) VALUES
+        (#{scontent},#{sa},#{sb},#{sc},#{sd},#{ans})
+    </insert>
+
+    <!--2.查询试题列表-->
+    <select id="queryItemList" resultType="Item">
+        select sid, scontent, sa, sb, sc, sd, ans
+        from onlinetest.item
+    </select>
+
+
+    <!--3.修改试题-->
+    <update id="updateItem" parameterType="Item">
+        update onlinetest.item
+        <set>
+            <if test="scontent!= null">scontent=#{scontent},</if>
+            <if test="sa!= null">sa=#{sa},</if>
+            <if test="sb!= null">sb=#{sb},</if>
+            <if test="sc!= null">sc=#{sc},</if>
+            <if test="sd!= null">sd=#{sd},</if>
+            <if test="ans!= null">ans=#{ans}</if>
+        </set>
+        where sid = #{sid}
+    </update>
+
+    <!--4.通过题目ID来查询题目-->
+    <select id="queryItemById" resultType="Item" parameterType="int">
+        select  sid, scontent, sa, sb, sc, sd, ans from onlinetest.item
+        where sid = #{sid}
+    </select>
+
+    <!--5.通过题目ID来删除题目-->
+    <delete id="deleteItem" parameterType="int">
+        delete from onlinetest.item
+        where sid = #{sid}
+    </delete>
+
+    <!--6.计算试题总数-->
+    <select id="countItem" resultType="int">
+        select count(1)
+        from onlinetest.item
+    </select>
+</mapper>

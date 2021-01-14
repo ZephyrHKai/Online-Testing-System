@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/onlinetest/layui/css/layui.css"/>
+</head>
+<body>
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+            <input type="text" id="username" name="username" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="name" name="name" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">输入密码</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input type="password" id="userpwd" name="userpwd" required lay-verify="required"-->
+<!--                   placeholder="请输入密码" autocomplete="off" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">确认密码</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input type="password" id="password" name="checkpwd" required lay-verify="required"-->
+<!--                   placeholder="请确认密码" autocomplete="off" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户权限</label>
+        <div class="layui-input-block">
+            <select id="status" name="status" lay-verify="required">
+                <option value="0">学生</option>
+                <option value="1">管理员</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="/onlinetest/js/JQuery.js"></script>
+<script type="text/javascript" src="/onlinetest/layui/layui.js"></script>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            // if(data.field.userpwd !== data.field.checkpwd){
+            //     layer.msg('密码不一致');
+            //     return false;
+            // }
+            //提交客户端
+
+                $.ajax({
+                    url: '/onlinetest/manage/updateuser',
+                    async: false,
+                    cache: false,
+                    type: "post",
+                    dataType : "json",
+                    data : data.field,
+                    success: function (res) {
+                        if(res.success){
+                            layer.msg("修改成功!");
+                        }else{
+                            layer.msg("修改失败!");
+                        }
+                    }
+                });
+                return false;
+
+
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinetest.online.dao.UserDao">
+
+    <!-- 1.通过userId查询用户   -->
+    <select id="queryUserById" resultType="User" parameterType="int">
+        select user_id, status, username, name from onlinetest.user
+        where user_id=#{userId}
+    </select>
+
+    <!-- 2.插入用户-->
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="userId"
+        keyColumn="user_id">
+        insert into onlinetest.user (user_id, status, username, userpwd, name)
+        values (#{userId}, #{status}, #{username}, #{userpwd}, #{name})
+    </insert>
+
+    <!-- 3.通过userId删除用户-->
+    <delete id="deleteUser">
+        delete from onlinetest.user where user_id=#{userId}
+    </delete>
+
+    <!--4.通过用户名和密码查询用户，登录用-->
+    <select id="queryUserByLogin" resultType="User" parameterType="String">
+        select user_id, status, username, name from onlinetest.user
+        where username=#{username} and userpwd=#{userpwd}
+    </select>
+
+    <!--5.查询所有用户列表，管理员用-->
+    <select id="queryUserList" resultType="User" parameterType="String">
+        select user_id, status, username, name from onlinetest.user
+    </select>
+    <!--6.通过用户名查找 -->
+    <select id="queryUserByName" resultType="User" parameterType="String">
+        select user_id from onlinetest.user where username=#{username}
+    </select>
+
+    <!--7.更新用户  -->
+    <update id="updateUser" parameterType="User">
+        update onlinetest.user
+        <set>
+            <if test="userpwd!=null">userpwd=#{userpwd},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="name != null">name = #{name}</if>
+        </set>
+        where username=#{username}
+    </update>
+</mapper>

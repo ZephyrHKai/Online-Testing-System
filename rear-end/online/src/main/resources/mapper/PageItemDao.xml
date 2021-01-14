@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinetest.online.dao.PageItemDao">
+    <!--1.插入一条关联记录-->
+    <insert id="insertPageItem" parameterType="PageItem">
+        insert into onlinetest.page_item (page_id, sid) VALUES
+        (#{pageId},#{sid});
+    </insert>
+
+    <!--2.删除一条关联记录-->
+    <delete id="deletePageItem" parameterType="PageItem">
+        delete from onlinetest.page_item
+        where page_id=#{pageId} and sid=#{sid}
+    </delete>
+
+
+    <!--3.批量插入试卷-试题信息    -->
+    <insert id="batchInsertPageItem" parameterType="java.util.List">
+        INSERT INTO
+        onlinetest.page_item (page_id, sid) VALUES
+        <foreach collection="list" item="pageItem" index="index" separator=",">
+            (
+            #{pageItem.pageId},
+            #{pageItem.sid}
+            )
+        </foreach>
+    </insert>
+
+    <!--4.删除该试卷下的所有试题 -->
+    <delete id="deleteAllPageItem">
+        delete from onlinetest.page_item where page_id=#{pageId}
+    </delete>
+
+    <!--5.批量获取记录   -->
+    <select id="queryPageItemList" resultType="PageItem" parameterType="int">
+        select  page_id, sid from onlinetest.page_item where page_id=#{pageId}
+    </select>
+
+
+</mapper>

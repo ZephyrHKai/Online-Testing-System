@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinetest.online.dao.ScoreDao">
+    <!--1.插入一个成绩记录-->
+    <insert id="insertScore" parameterType="Score" useGeneratedKeys="true"
+            keyProperty="scoreId" keyColumn="score_id">
+        insert into onlinetest.score (user_id, page_id, total_score) VALUES
+        (#{userId},#{pageId},#{totalScore})
+    </insert>
+
+    <!--2.更新记录-->
+    <update id="updateScore" parameterType="Score">
+        update onlinetest.score
+        <set>
+            <if test="totalScore != null">total_score=#{totalScore},</if>
+            <if test="status != null">status=#{status}</if>
+        </set>
+    </update>
+
+    <!--3.删除记录-->
+    <delete id="deleteScore" parameterType="int">
+        delete from  onlinetest.score where score_id=#{scoreId}
+    </delete>
+
+    <!--4.查询成绩列表-->
+    <select id="queryScoreList" resultType="Score">
+        select score_id, user_id, page_id, total_score, status
+        from onlinetest.score
+    </select>
+
+    <!--5.通过试卷id查询成绩列表-->
+    <select id="queryScoreListByPageId" resultType="Score"
+            parameterType="int">
+        select score_id, user_id, page_id, total_score, status
+        from onlinetest.score where page_id=#{pageId}
+    </select>
+
+    <!--6.通过用户ID来查询成绩列表-->
+    <select id="queryScoreListByUserId" resultType="Score"
+            parameterType="int">
+        select score_id, user_id, page_id, total_score, status
+        from onlinetest.score where user_id=#{userId} and status=1
+    </select>
+
+    <!--7.通过用户ID和试卷ID来查询成绩-->
+    <select id="queryScoreByPageIdAndUserId" resultType="Score" parameterType="int">
+        select score_id, user_id, page_id, total_score, status  from  onlinetest.score
+        where page_id=#{pageId} and user_id=#{userId}
+    </select>
+
+</mapper>
